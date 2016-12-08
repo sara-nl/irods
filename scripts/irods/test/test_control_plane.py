@@ -21,7 +21,6 @@ from ..test.command import assert_command
 
 SessionsMixin = session.make_sessions_mixin([('otherrods','pass')], [])
 
-
 class TestControlPlane(SessionsMixin, unittest.TestCase):
     def test_pause_and_resume(self):
         assert_command('irods-grid pause --all', 'STDOUT_SINGLELINE', 'pausing')
@@ -44,7 +43,8 @@ class TestControlPlane(SessionsMixin, unittest.TestCase):
 
     @unittest.skipIf(test.settings.RUN_IN_TOPOLOGY, 'Skip for Topology Testing: No way to restart grid')
     def test_shutdown(self):
-        assert lib.re_shm_exists()
+        if 'irods_rule_engine_plugin-irods_rule_language' in IrodsConfig().configured_rule_engine_plugins:
+            assert lib.re_shm_exists()
 
         try:
             assert_command('irods-grid shutdown --all', 'STDOUT_SINGLELINE', 'shutting down')
