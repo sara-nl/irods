@@ -8,5 +8,9 @@ if [ "$1" = "runinplace" ] ; then
     cd $SCRIPTPATH/../
     echo `pwd`
 else
-    echo /var/lib/irods/iRODS
+    if [ -n "$IRODS_HOME" ]; then
+        echo $IRODS_HOME/iRODS
+    else
+        echo /var/lib/irods/iRODS
+    fi
 fi
